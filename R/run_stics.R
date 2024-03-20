@@ -98,10 +98,10 @@ run_stics <- function(stics_exe,
 
   # Calling the internal underlying function for running the model
   usms_out <- run_system(model_path,
-                         data_dir,
-                         usm_dir_names,
-                         check_exe,
-                         display
+    data_dir,
+    usm_dir_names,
+    check_exe,
+    display
   )
 
   return(invisible(usms_out))

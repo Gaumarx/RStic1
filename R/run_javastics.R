@@ -165,10 +165,10 @@ run_javastics <- function(javastics,
   cmd_type <- "run"
   if (optim) cmd_type <- "generate"
   cmd_list <- SticsRFiles:::get_javastics_cmd(javastics_path,
-                                              java_cmd = java_cmd,
-                                              type = cmd_type,
-                                              workspace = ws,
-                                              verbose = verbose
+    java_cmd = java_cmd,
+    type = cmd_type,
+    workspace = ws,
+    verbose = verbose
   )
   command <- cmd_list[[1]]
   cmd_string <- cmd_list[[2]]
@@ -192,9 +192,7 @@ run_javastics <- function(javastics,
       file.remove(histo_copy)
     }
 
-    #if (verbose) {
-      print(usm_name)
-    #}
+    print(usm_name)
 
     if (optim) {
       system2(
@@ -210,7 +208,7 @@ run_javastics <- function(javastics,
       usm_out$error <- tmp[[1]]$error
       usm_out$message <- tmp[[1]]$message
     } else {
-        status <- system2(
+      status <- system2(
         command = command, args = paste(cmd_string, usm_name),
         stdout = TRUE,
         stderr = TRUE,

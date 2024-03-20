@@ -32,11 +32,12 @@
 #' is given, e.g. stics_intercrop_win_2.
 #' In any case, the function will inform the user of which stics is being used
 #' to avoid any issue.
+#' Updates the "preference.xml" file in the config of JavaStics.
 #'
 #' @note "stics_modulo", "sticsmodulo" and "modulostics" are synonyms for the
 #' standard STICS executable.
 #'
-#' @return Nothing. Update the "preference.xml" file in the config of JavaStics.
+#' @return None
 #'
 #' @examples
 #' \dontrun{
@@ -63,14 +64,15 @@ set_stics_exe <- function(javastics,
   if (stics_exe == "stics_modulo" || stics_exe == "sticsmodulo") {
     # ' stics_exe= "modulostics"
     switch(SticsRFiles:::user_os(),
-           lin = {
-             "modulostics_linux"
-           },
-           mac = {
-             "modulostics_mac"
-           }, {
-             "modulostics"
-           }
+      lin = {
+        "modulostics_linux"
+      },
+      mac = {
+        "modulostics_mac"
+      },
+      {
+        "modulostics"
+      }
     )
   }
 
@@ -176,7 +178,7 @@ set_stics_exe <- function(javastics,
     gsub(".exe", "", exe_file_name),
     "_",
     SticsRFiles:::user_os()
-    )
+  )
 
   # Check if the name already exist:
   exist_stics_name <- exist_stics_exe(javastics, new_stics_name)
@@ -319,7 +321,7 @@ list_stics_exe <- function(javastics) {
 #' @param stop Logical for stopping or not execution
 #' @param verbose provide hints to the user if `TRUE` (only if `stop= FALSE`)
 #'
-#' @return System output (error,...)
+#' @return invisible output status (error,...)
 #'
 #' @keywords internal
 #'
@@ -357,8 +359,8 @@ check_stics_exe <- function(model_path,
   }
   # catching returned error status
   err_status <- suppressWarnings(run_system_cmd(model_path,
-                                                com_args = "--version",
-                                                output = version
+    com_args = "--version",
+    output = version
   ))
 
   # exiting if any error
@@ -402,11 +404,12 @@ check_stics_exe <- function(model_path,
 #' executables, and `set_stics_exe()` to add and select a new one.
 #' The identification names can be retreived using
 #' `names(list_stics_exe(javastics)$stics_list)`
+#' Updates the "preference.xml" file in the config of JavaStics.
 #'
 #' @note "stics_modulo", "sticsmodulo" and "modulostics" are synonyms for
 #' the standard STICS executable.
 #'
-#' @return Nothing. Update the "preference.xml" file in the config of JavaStics.
+#' @return None
 #'
 #' @examples
 #' \dontrun{
@@ -484,9 +487,12 @@ select_stics_exe <- function(javastics, stics_exe = "stics_modulo") {
 #' exist_stics_exe("path/to/JavaSTICS-v131-stics-v841", "stics_name")
 #' }
 #'
-#' @return Existing status, logical
+#' @return Existing status (logical)
 #'
 #' @keywords internal
+#'
+#' @noRd
+#'
 exist_stics_exe <- function(javastics, stics_exe) {
   is.element(stics_exe, names(list_stics_exe(javastics)$stics_list))
 }
@@ -507,8 +513,9 @@ exist_stics_exe <- function(javastics, stics_exe) {
 #' identification name. Please use `list_stics_exe()` to list all available
 #' executables, and `set_stics_exe()` to add a new one. The identification names
 #' can be retreived using `names(list_stics_exe(javastics)$stics_list)`
+#' Updates the "preference.xml" file in the config of JavaStics.
 #'
-#' @return Nothing. Update the "preference.xml" file in the config of JavaStics.
+#' @return None
 #'
 #' @examples
 #' \dontrun{
@@ -588,6 +595,7 @@ remove_stics_exe <- function(javastics, stics_exe) {
 #' @param file
 #'
 #' @return a SticsRFiles xml_document object
+#'
 #' @keywords internal
 #'
 #' @noRd

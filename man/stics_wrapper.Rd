@@ -57,7 +57,8 @@ longer supported, use \code{situation} instead.}
 longer supported, use \code{var} instead.}
 }
 \value{
-A list containing simulated values (\code{sim_list}: a list of tibbles
+A named list containing simulated values
+(\code{sim_list}: a list of tibbles)
 (one element per situation) and an error code (\code{error}) indicating if at
 least one simulation ended with an error.
 }

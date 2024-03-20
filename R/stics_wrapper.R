@@ -41,7 +41,8 @@
 #' @param var_names `r lifecycle::badge("deprecated")` `var_names` is no
 #'   longer supported, use `var` instead.
 #'
-#' @return A list containing simulated values (`sim_list`: a list of tibbles
+#' @return A named list containing simulated values 
+#' (`sim_list`: a list of tibbles)
 #' (one element per situation) and an error code (`error`) indicating if at
 #' least one simulation ended with an error.
 #'
@@ -210,7 +211,7 @@ stics_wrapper <- function(model_options,
       warning(paste0(
         "No folder(s) found in ", data_dir, " for USMs ",
         paste(setdiff(required_situations, avail_sit),
-              collapse = " "
+          collapse = " "
         ),
         "\n These USMs will not be simulated."
       ))
@@ -229,7 +230,7 @@ stics_wrapper <- function(model_options,
     warning(paste0(
       "No folder(s) found in ", data_dir, " for USMs ",
       paste(setdiff(unlist(successive_usms), avail_sit),
-            collapse = " "
+        collapse = " "
       ),
       "\n The corresponding successions of USMs will not be simulated."
     ))
@@ -506,11 +507,10 @@ stics_wrapper <- function(model_options,
             sim_list[[ip]] <-
               sim_list[[ip]] %>%
               dplyr::mutate(
-                dplyr::across(
-                  dplyr::all_of(
-                    intersect(stages_list, names(.))
-                  ),
-                  ~dplyr::na_if(., 0)) %>%
+                dplyr::across(dplyr::all_of(
+                  intersect(stages_list, names(.))
+                ),
+                ~dplyr::na_if(., 0)) %>%
                   tidyr::fill(tidyr::everything(), .direction = "up")
               )
           }
@@ -600,6 +600,8 @@ stics_wrapper <- function(model_options,
 #'    o varmod_modified: a logical indicating if the var.mod file has been
 #'    modified
 #'
+#' @keywords internal
+#'
 #' @noRd
 
 select_results <- function(keep_all_data, sit_var_dates_mask, var_names,
@@ -621,7 +623,7 @@ select_results <- function(keep_all_data, sit_var_dates_mask, var_names,
     res$simulate <- FALSE
     return(res)
   } else if (!is.null(sit_var_dates_mask) &&
-             is.null(sit_var_dates_mask[[situation]])) {
+               is.null(sit_var_dates_mask[[situation]])) {
 
     # no results required for this situation -> return NULL
     ############################################################################
@@ -646,7 +648,8 @@ select_results <- function(keep_all_data, sit_var_dates_mask, var_names,
       req_var_names <- c(var_names)
     }
 
-    ## Convert required variables names to Stics variables names (i.e. handle ())
+    ## Convert required variables names to Stics 
+    # variables names (i.e. handle ())
     req_var_names <- SticsRFiles:::var_to_col_names(req_var_names)
 
     ## Add reserved keywords "Plant" and "Date" from the list
@@ -658,8 +661,9 @@ select_results <- function(keep_all_data, sit_var_dates_mask, var_names,
     inter_var_names <- sim_var_names[req_vars_idx]
 
 
-    ## In case some variables are not simulated, warn the user, add them in var.mod
-    ## and re-simulate or select the results if var.mod has already been modified.
+    ## In case some variables are not simulated, warn the user,
+    # add them in var.mod and re-simulate or select the results if var.mod
+    # has already been modified.
     if (length(inter_var_names) < length(req_var_names)) {
       if (varmod_modified) {
         ## var.mod has already been modified ... warn the user the required
@@ -668,12 +672,13 @@ select_results <- function(keep_all_data, sit_var_dates_mask, var_names,
         res$message <- warning(paste(
           "Variable(s)",
           paste(setdiff(req_var_names, inter_var_names),
-                collapse = ", "
+            collapse = ", "
           ),
           "not simulated by the Stics model for USM",
           situation,
           "although added in", file.path(run_dir, "var.mod"),
-          "=> these variables may not be Stics variables, please check spelling. \n ",
+          "=> these variables may not be Stics variables,",
+          "please check spelling. \n ",
           "Simulated variables:", paste(sim_var_names, collapse = ", ")
         ))
         res$flag_error <- FALSE
@@ -692,7 +697,7 @@ select_results <- function(keep_all_data, sit_var_dates_mask, var_names,
           res$message <- warning(paste(
             "Variable(s)",
             paste(setdiff(req_var_names, inter_var_names),
-                  collapse = ", "
+              collapse = ", "
             ),
             "not simulated by the Stics model for USM", situation,
             "=>", file.path(run_dir, "var.mod"),
@@ -1072,13 +1077,13 @@ stics_wrapper_options <- function(javastics = NULL,
       list_stics_exe(javastics)$stics_list[stics_exe][[1]]
     )
   } else if (!is.null(javastics) &&
-             check_stics_exe(
-               model_path = file.path(
-                 javastics, "bin",
-                 basename(stics_exe)
-               ),
-               stop = FALSE
-             )) {
+    check_stics_exe(
+      model_path = file.path(
+        javastics, "bin",
+        basename(stics_exe)
+      ),
+      stop = FALSE
+    )) {
     # Case 2: stics_exe is an executable from the bin directory in JavaStics:
     stics_exe <- file.path(javastics, "bin", basename(stics_exe))
   } else if (!check_stics_exe(model_path = stics_exe, stop = FALSE)) {
